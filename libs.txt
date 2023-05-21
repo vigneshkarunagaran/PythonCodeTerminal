@@ -1,5 +1,3 @@
-datetime
-os
 shutil
 tkinter
 customtkinter
