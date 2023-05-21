@@ -7,7 +7,6 @@ from queue import Empty, Queue
 from subprocess import PIPE, Popen
 from threading import Thread
 from tkinter import *
-
 import customtkinter
 
 customtkinter.set_appearance_mode("System")
@@ -19,7 +18,7 @@ codePath = os.path.join(
     rootDir, "codeBase\sampleScript.py")  # Your script here
 
 # your argument as key value pair
-runArguements = {
+runArguments = {
     "None": "",
     "Full": "-f",
     "Test": "-t",
@@ -29,7 +28,7 @@ runArguements = {
 
 # code backup details
 backups = {
-    "inpurPath": os.path.join(rootDir, "codeBase", ""),
+    "inputPath": os.path.join(rootDir, "codeBase", ""),
     "backUpPath": os.path.join(rootDir, "backupPath")
 }
 
@@ -126,28 +125,25 @@ class App(customtkinter.CTk):
 
         # create sidebar1 frame
         self.controlFrame = customtkinter.CTkFrame(self)
-        self.controlFrame.grid(row=0, column=0, padx=(
-            20, 20), pady=(20, 0), sticky="nsew")
+        self.controlFrame.grid(row=0, column=0, padx=20, pady=(20, 0), sticky="nsew")
 
-        self.runArguments = list(runArguements.keys())
-        self.selectedArguements = self.runArguments[0]
+        self.runArguments = list(runArguments.keys())
+        self.selectedArguments = self.runArguments[0]
         self.option_var = tk.StringVar(self)
         self.combobox = customtkinter.CTkComboBox(self.controlFrame,
                                                   values=self.runArguments,
                                                   variable=self.option_var,
-                                                  command=self.option_changed,
-                                                  )
+                                                  command=self.option_changed)
         self.combobox.grid(row=0, column=0, padx=20, pady=10, sticky="n")
         self.combobox.set(self.runArguments[0])
 
         self.runCodeBt = customtkinter.CTkButton(
-            self.controlFrame, text='Run PY', command=lambda: self.runTask())
+            self.controlFrame, text='Run PY', command=self.runTask)
         self.runCodeBt.grid(row=1, column=0, padx=20, pady=10, sticky="n")
 
         # # create sidebar2 frame
         self.maintenanceFrame = customtkinter.CTkFrame(self)
-        self.maintenanceFrame.grid(row=1, column=0, padx=(
-            20, 20), pady=(20, 0), sticky="nsew")
+        self.maintenanceFrame.grid(row=1, column=0, padx=20, pady=(20, 0), sticky="nsew")
 
         self.cleanBt = customtkinter.CTkButton(
             self.maintenanceFrame, text='Clean Log', command=self.cleanLog)
@@ -155,11 +151,9 @@ class App(customtkinter.CTk):
 
         # create sidebar3 frame
         self.backupFrame = customtkinter.CTkFrame(self)
-        self.backupFrame.grid(row=2, column=0, padx=(
-            20, 20), pady=(20, 20), sticky="nsew")
+        self.backupFrame.grid(row=2, column=0, padx=20, pady=(20, 20), sticky="nsew")
 
-        self.backupMessageEntry = customtkinter.CTkTextbox(
-            self.backupFrame, width=150)
+        self.backupMessageEntry = customtkinter.CTkTextbox(self.backupFrame, width=150)
         self.backupMessageEntry.grid(row=0, column=0, padx=10, pady=10)
         self.backupMessageEntry.insert("1.0", text="Backup Message")
 
@@ -169,18 +163,15 @@ class App(customtkinter.CTk):
 
         # create Task View
         self.logFrame = customtkinter.CTkFrame(self)
-        self.logFrame.grid(row=0, column=1, rowspan=3, padx=(
-            20, 20), pady=(20, 20), sticky="nsew")
+        self.logFrame.grid(row=0, column=1, rowspan=3, padx=20, pady=(20, 20), sticky="nsew")
 
-        self.logTextArea = Listbox(self.logFrame,
-                                   selectmode=MULTIPLE, font=('Times', 15))
-        self.logTextArea.grid(
-            row=0, column=0, sticky=N+S+W+E)
+        self.logTextArea = Listbox(self.logFrame, selectmode=MULTIPLE, font=('Times', 15))
+        self.logTextArea.grid(row=0, column=0, sticky=N+S+W+E)
         self.logFrame.grid_columnconfigure(0, weight=1)
         self.logFrame.grid_rowconfigure(0, weight=1)
 
     def option_changed(self, *args):
-        self.selectedArguements = self.option_var.get()
+        self.selectedArguments = self.option_var.get()
 
     def logMe(self, message, level=0):
         """
@@ -210,12 +201,12 @@ class App(customtkinter.CTk):
             None
         """
         self.logMe("Initiating Thread Environment", 1)
-        runArguementselected = runArguements[self.selectedArguements]
-        cmd = f'python {codePath} {runArguementselected}'
+        runArgumentSelected = runArguments[self.selectedArguments]
+        cmd = f'python {codePath} {runArgumentSelected}'
         if ".py" in cmd:
             self.logMe(f"Selected CMD {cmd}", 1)
             app = DisplaySubprocessOutputDemo(
-                self.logTextArea, runArguementselected, cmd)
+                self.logTextArea, runArgumentSelected, cmd)
         else:
             self.logMe("codePath should be your main python file", 1)
 
@@ -229,25 +220,25 @@ class App(customtkinter.CTk):
         self.logTextArea.delete(0, END)
         self.logMe(f"Cleaning Logs Completed", 1)
 
-    def zipMe(self, zipname, message):
+    def zipMe(self, zipName, message):
         """
         Create a zip file of the specified directory.
 
         Args:
-            zipname (str): The name of the zip file.
+            zipName (str): The name of the zip file.
             message (str): The backup message.
 
         Returns:
             None
         """
         destinationPath = os.path.join(
-            backups["backUpPath"], zipname)
-        sourcePath = backups["inpurPath"]
+            backups["backUpPath"], zipName)
+        sourcePath = backups["inputPath"]
 
         shutil.make_archive(destinationPath, 'zip', sourcePath)
         with open(os.path.join(backups["backUpPath"], 'readme.txt'), 'a') as fo:
-            fo.write(zipname+' - '+message)
-        self.logMe(f"Backedup File :: {destinationPath}", 1)
+            fo.write(zipName+' - '+message)
+        self.logMe(f"Backed up File: {destinationPath}", 1)
         webbrowser.open(backups["backUpPath"])
 
     def backupRepo(self):
