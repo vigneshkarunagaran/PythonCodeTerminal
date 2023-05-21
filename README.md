@@ -135,3 +135,15 @@ class App(customtkinter.CTk):
         """
         ...
 ```
+## Screenshots
+- Launch screen
+![image](https://github.com/vigneshkarunagaran/CustomeTerminal/assets/59251885/5f8903fe-05c0-41e6-b566-858d666a3c91)
+- `Run PY` Executes sample code with `-t` as sys argument
+- `Argument drop down` allows user to choose various custome arguments available
+![image](https://github.com/vigneshkarunagaran/CustomeTerminal/assets/59251885/69565280-94d4-4edf-8190-608a9288ec8e)
+- `Clean Log` cleares the terminal area
+- `Backup` Zips the code with date and time stamp and logs the same in readme.txt
+![image](https://github.com/vigneshkarunagaran/CustomeTerminal/assets/59251885/90c3d93b-32ec-495b-8c5b-8c27be1b342f)
+
+
+ 
