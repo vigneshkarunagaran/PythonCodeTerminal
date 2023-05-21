@@ -2,6 +2,23 @@
 
 This is a GUI application for executing Python code in a custome terminal and performing related tasks such as cleaning the log and backing up the code repository.
 
+---
+
+# Libraries:
+1.  customtkinter
+2.  tkinter
+3.  os
+
+---
+
+# Setup
+Install the module with pip:
+```
+pip3 install -r libs.txt
+```
+
+---
+
 ## Setup and Configuration
 
 Before running the application, ensure that you have the following setup and configuration details:
