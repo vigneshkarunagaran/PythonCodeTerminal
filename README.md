@@ -4,14 +4,14 @@ This is a GUI application for executing Python code in a custome terminal and pe
 
 ---
 
-# Libraries:
+## Libraries:
 1.  customtkinter
 2.  tkinter
 3.  os
 
 ---
 
-# Setup
+## Setup
 Install the module with pip:
 ```
 pip3 install -r libs.txt
