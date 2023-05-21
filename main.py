@@ -1,5 +1,4 @@
 import datetime
-import json
 import os
 import shutil
 import tkinter as tk
@@ -15,8 +14,11 @@ customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("blue")
 rootDir = os.path.dirname(os.path.abspath(__file__))
 
-codePath = os.path.join(rootDir, "codeBase\sampleScript.py")
+# Config details
+codePath = os.path.join(
+    rootDir, "codeBase\sampleScript.py")  # Your script here
 
+# your argument as key value pair
 runArguements = {
     "None": "",
     "Full": "-f",
@@ -25,6 +27,7 @@ runArguements = {
     "Regression": "-r"
 }
 
+# code backup details
 backups = {
     "inpurPath": os.path.join(rootDir, "codeBase", ""),
     "backUpPath": os.path.join(rootDir, "backupPath")
@@ -41,6 +44,17 @@ def iter_except(function, exception):
 
 class DisplaySubprocessOutputDemo:
     def __init__(self, root, repo, cmd):
+        """
+        Initializes an instance of the class.
+
+        Args:
+            root (str): The root directory.
+            repo (str): The repository.
+            cmd (list): The command to execute.
+
+        Returns:
+        None
+        """
         self.root = root
         self.cmd = cmd
         self.process = Popen(cmd, stdout=PIPE)
@@ -53,7 +67,15 @@ class DisplaySubprocessOutputDemo:
         self.update(q)
 
     def reader_thread(self, q):
-        """Read subprocess output and put it into the queue."""
+        """
+        Read subprocess output and put it into the queue.
+
+        Args:
+            q (Queue): The queue to put the subprocess output into.
+
+        Returns:
+            None
+        """
         try:
             with self.process.stdout as pipe:
                 for line in iter(pipe.readline, b''):
@@ -62,30 +84,26 @@ class DisplaySubprocessOutputDemo:
             q.put(None)
 
     def update(self, q):
-        """Update GUI with items from the queue."""
+        """
+        Update GUI with items from the queue.
+
+        Args:
+            q (Queue): The queue containing items to update the GUI with.
+
+        Returns:
+            None
+        """
         for line in iter_except(q.get_nowait, Empty):
             if line is None:
                 self.root.insert(tk.END, "Thread Completed")
                 self.root.itemconfig(tk.END, {'bg': '#FFFF00'})
                 self.root.see("end")
-                self.launchReport()
                 return
             else:
                 self.root.insert(tk.END, line)
                 self.root.see("end")
                 break
         self.root.after(10, self.update, q)
-
-    def launchReport(self):
-
-        if "beta" in self.repo:
-            if "-c" in self.cmd:
-                report = os.path.join(self.repo, "Reports")
-            else:
-                report = os.path.join(self.repo, "ResultData")
-            resultList = [os.path.join(report, x) for x in os.listdir(report)]
-            latestResult = max(resultList, key=os.path.getctime)
-            webbrowser.open(latestResult)
 
 
 class App(customtkinter.CTk):
@@ -165,6 +183,16 @@ class App(customtkinter.CTk):
         self.selectedArguements = self.option_var.get()
 
     def logMe(self, message, level=0):
+        """
+        Log a message to the logTextArea.
+
+        Args:
+            message (str): The message to log.
+            level (int): The log level. 0 = Normal, 1 = Blue, 2 = Yellow.
+
+        Returns:
+            None
+        """
         self.logTextArea.insert(tk.END, message)
         if level == 1:
             # blue
@@ -175,6 +203,12 @@ class App(customtkinter.CTk):
         self.logTextArea.see("end")
 
     def runTask(self):
+        """
+        Run the selected task.
+
+        Returns:
+            None
+        """
         self.logMe("Initiating Thread Environment", 1)
         runArguementselected = runArguements[self.selectedArguements]
         cmd = f'python {codePath} {runArguementselected}'
@@ -186,10 +220,26 @@ class App(customtkinter.CTk):
             self.logMe("codePath should be your main python file", 1)
 
     def cleanLog(self):
+        """
+        Clean the logTextArea.
+
+        Returns:
+            None
+        """
         self.logTextArea.delete(0, END)
         self.logMe(f"Cleaning Logs Completed", 1)
 
     def zipMe(self, zipname, message):
+        """
+        Create a zip file of the specified directory.
+
+        Args:
+            zipname (str): The name of the zip file.
+            message (str): The backup message.
+
+        Returns:
+            None
+        """
         destinationPath = os.path.join(
             backups["backUpPath"], zipname)
         sourcePath = backups["inpurPath"]
@@ -201,6 +251,12 @@ class App(customtkinter.CTk):
         webbrowser.open(backups["backUpPath"])
 
     def backupRepo(self):
+        """
+        Backup the repository.
+
+        Returns:
+            None
+        """
         reportStartTime = datetime.datetime.now()
         timeOfExecution = (reportStartTime.strftime("%d-%b-%Y"),
                            reportStartTime.strftime("%H:%M:%S"))
