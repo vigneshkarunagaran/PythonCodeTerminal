@@ -7,26 +7,23 @@ This is a GUI application for executing Python code in a custome terminal and pe
 ## Libraries:
 1.  customtkinter
 2.  tkinter
-3.  os
-
----
-
-## Setup
-Install the module with pip:
-```
-pip3 install -r libs.txt
-```
+3.  subprocess
+4.  shutil
 
 ---
 
 ## Setup and Configuration
-
+Install the module with pip:
+```
+pip3 install -r libs.txt
+```
 Before running the application, ensure that you have the following setup and configuration details:
 
 - `codePath`: Path to the Python script you want to execute.
 - `runArguments`: A dictionary containing key-value pairs for different run arguments.
 - `backups`: A dictionary containing backup-related paths. Modify the values of `inputPath` and `backUpPath` variables in the `backups` dictionary to specify the input directory and the backup destination directory.
 
+---
 ## Function: iter_except
 - This function takes a callable function and a specific exception as arguments. 
 - It repeatedly calls the function until the specified exception is raised. 
