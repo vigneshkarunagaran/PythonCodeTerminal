@@ -1,6 +1,8 @@
 # Python Code Executor
 
-This is a GUI application for executing Python code in a custome terminal and performing related tasks such as cleaning the log and backing up the code repository.
+- This is a GUI application for executing Python code in a custome terminal with realtime running logs 
+- Allows you to save and pass cmd line arguments using dropdown
+- Allows you to zip your code as backup
 
 ---
 
